@@ -1,0 +1,12 @@
+<appian-plugin name="Log Configuration" key="com.icf.util">
+  <plugin-info>
+    <description>Log Configuration</description>
+    <vendor name="ICF International" url="http://www.icf.com" />
+    <version>1.0.0</version>
+    <application-version min="21.2" />
+  </plugin-info>
+  <function-category key="logConfigCategory" name="Log Configuration" />
+  <function key="logConfiguration" class="com.icfi.logconfig.LogConfiguration" />
+  
+
+</appian-plugin>
