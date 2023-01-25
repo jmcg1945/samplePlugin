@@ -18,5 +18,5 @@
 	<classpathentry kind="lib" path="C:/xmlBeans/xmlbeans-5.1.1/lib/xmlbeans-5.1.1.jar"/>
 	<classpathentry kind="lib" path="C:/Users/joseph.mcgraw/Downloads/tika-app-2.6.0.jar"/>
 	<classpathentry kind="lib" path="C:/Appian223/Appian/deployment/web.war/WEB-INF/lib/log4j-api-2.17.1.jar"/>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="output" path="src"/>
 </classpath>
