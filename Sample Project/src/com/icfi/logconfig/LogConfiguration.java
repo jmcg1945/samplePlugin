@@ -5,27 +5,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.commons.compress.utils.IOUtils;
 
-
-
-
-//import org.w3c.dom.*;
-import org.w3c.dom.NodeList;
-import org.xml.sax.Attributes;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.DefaultHandler;
 
 import com.appiancorp.suiteapi.content.ContentConstants;
 import com.appiancorp.suiteapi.content.ContentService;
@@ -42,28 +29,30 @@ import com.appiancorp.suiteapi.expression.annotations.Parameter;
 @Category("logConfigCategory")
 public class LogConfiguration {
 	
-	
+	//this LOGGER will print debug code to  "appian.log" path: C:\Appian223\Appian\tomcat\apache-tomcat\bin  
 	private static final Logger LOGGER = Logger.getLogger(LogConfiguration.class.getName());
 	
+	
+	//enter Document Id of Document uploaded into Appian
+	//function will return Document XML of the file
 	  @Function
 	  public static  String runFunction(ContentService cs, @Parameter Long arg) throws Exception {
-		  FileInputStream fis = null;
-		  int len;
+		
 		  
-		  
-
+		 
 			  String filename = cs.getInternalFilename(arg);
-			  
+			  String line = "";
+			  StringBuilder sb = new StringBuilder();
 			  File inputDirectory = new File(filename);
 			  ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(inputDirectory));
-			  int numberOfFiles = 0;
+			  
 			  
 			  ZipEntry zipEntry;
 			  
-			  
+			  //gets xml files in zipped up docx file
 			  while((zipEntry = zipInputStream.getNextEntry()) != null) {
-				  numberOfFiles++;
-				  
+				
+				  //returns the file in the zipped directory that contains the document details
 				  if(zipEntry.getName().equalsIgnoreCase("Word/document.xml")) {
 					  LOGGER.info("Found word/document.xml");
 					  com.appiancorp.suiteapi.knowledge.Document xmlDoc = new com.appiancorp.suiteapi.knowledge.Document(1225L, "myXMLDocument", "xml");
@@ -76,21 +65,31 @@ public class LogConfiguration {
 					  
 					  File readXML = new File(cs.getInternalFilename(docId));
 					  BufferedReader reader = new BufferedReader(new FileReader(readXML));
-
-					  String line = reader.readLine();
-					  StringBuilder sb = new StringBuilder();
-					 
+					  
+					   line = reader.readLine();
+					
+					  LOGGER.info("Line value is start of while:" + line);
 					  while (line != null) {
 						  LOGGER.info("Start of while loop");
+						  LOGGER.info("Line value is:" + line);
+						 
+						  
+						  //broken
+						  //if (line.contains("<w:t>")) is not reading <w:t> tags contained in the long string in variable "line"
 					    if (line.contains("<w:t>")) {
 					      int startIndex = line.indexOf("<w:t>") + "<w:t>".length();
 					      int endIndex = line.indexOf("</w:t>");
 					      String value = line.substring(startIndex, endIndex);
 					      LOGGER.info("Value: " + value);
-					      LOGGER.info("Line value is:" + line);
+					      LOGGER.info(":" + line);
 					    }
+					    //broken
+					    
 					    line = reader.readLine();
+					    sb.append(line);
+					    LOGGER.info("Line value end of while loop is" + line);
 					    LOGGER.info("End of Loop");
+					    
 					  }
 					 
 					  reader.close();
@@ -99,7 +98,7 @@ public class LogConfiguration {
 		  
 	  
 	  }
-			return filename;
+			 return sb.toString();
 			
 	  }
 }
