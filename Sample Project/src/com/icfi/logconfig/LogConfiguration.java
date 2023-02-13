@@ -33,7 +33,7 @@ public class LogConfiguration {
 	private static final Logger LOGGER = Logger.getLogger(LogConfiguration.class.getName());
 	
 	
-	//enter Document Id of Document uploaded into Appian
+	//enter Document Id of a Document uploaded into Appian(docx document uploaded)
 	//function will return Document XML of the file
 	  @Function
 	  public static  String runFunction(ContentService cs, @Parameter Long arg) throws Exception {
